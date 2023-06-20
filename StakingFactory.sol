@@ -27,7 +27,9 @@ contract StakingFactory is Ownable, IStakingFactory, ReentrancyGuard {
         address stakingPoolImplementation_,
         address feeAddress_,
         uint256 fee_
-    ) {
+    ) { 
+        require(stakingPoolImplementation_ != address(0), "Invalid address");
+        require(feeAddress_ != address(0), "Invalid address");
         stakingPoolImplementation = stakingPoolImplementation_;
         feeAddress = feeAddress_;
         fee = fee_;
@@ -57,10 +59,12 @@ contract StakingFactory is Ownable, IStakingFactory, ReentrancyGuard {
     }
 
     function setStakingPoolImplementation(address stakingPoolImplementation_) external onlyOwner {
+        require(stakingPoolImplementation_ != address(0), "Invalid address");
         stakingPoolImplementation = stakingPoolImplementation_;
     }
 
     function setFeeAddress(address feeAddress_) external onlyOwner {
+        require(feeAddress_ != address(0), "Invalid address");
         feeAddress = feeAddress_;
     }
 
@@ -100,7 +104,6 @@ contract StakingFactory is Ownable, IStakingFactory, ReentrancyGuard {
     }
 
     function removeUserStakedPool(address user) external {
-        require(_stakingPools.contains(msg.sender), "Invalid staking pool");
         address[] storage stakedPools = userStakedPools[user];
         uint256 length = stakedPools.length;
         for (uint256 i = 0; i < length; i++) {

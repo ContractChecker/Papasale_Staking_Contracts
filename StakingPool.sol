@@ -39,9 +39,11 @@ contract StakingPool is IStakingPool, Initializable, ReentrancyGuard, Pausable {
     event Staked(address indexed user, uint256 amount);
 
     function initialize(address factory_, address owner_, Arguments memory arguments) external initializer {
+        require(factory_ != address(0), "Invalid factory address");
+        require(owner_ != address(0), "Invalid owner address");
+        require(arguments.addresses[0] != address(0), "Invalid token address");
         owner = owner_;
         factory = IStakingFactory(factory_);
-
         token = IERC20Metadata(arguments.addresses[0]);
 
         bonus = arguments.numbers[0];
